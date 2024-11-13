@@ -1,10 +1,19 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import AxiosConfig from '@/shared/infraestructure/axios.config';
+import { injectable } from 'tsyringe';
+import { IApiService } from '@/shared/domain/interfaces/implementations/api.interface';
+import { HandleError } from '@/shared/infraestructure/handle.error';
 
-export default class ApiService {
-  _httpClient: AxiosInstance;
-  constructor(private readonly axiosConfig: AxiosConfig) {
-    this._httpClient = axiosConfig.createAxiosInstance(true);
+@injectable()
+export default class ApiService implements IApiService {
+  #httpClient: AxiosInstance;
+  #handleError: HandleError;
+  constructor(
+    private readonly axiosConfig: AxiosConfig,
+    private readonly handleError: HandleError
+  ) {
+    this.#httpClient = axiosConfig.createAxiosInstance(true);
+    this.#handleError = handleError;
   }
 
   async get<T>(endpoint: string): Promise<T> {
@@ -12,7 +21,7 @@ export default class ApiService {
       const response: AxiosResponse<T> = await this._httpClient.get(endpoint);
       return response.data;
     } catch (error) {
-      console.error('GET request failed:', error);
+      return this.handleError.handle(error);
     }
   }
 
@@ -24,7 +33,7 @@ export default class ApiService {
       );
       return response.data;
     } catch (error) {
-      console.error('POST request failed:', error);
+      return this.handleError.handle(error);
     }
   }
 
@@ -36,7 +45,7 @@ export default class ApiService {
       );
       return response.data;
     } catch (error) {
-      console.error('PATCH request failed:', error);
+      return this.handleError.handle(error);
     }
   }
 
@@ -46,7 +55,7 @@ export default class ApiService {
         await this._httpClient.delete(endpoint);
       return response.data;
     } catch (error) {
-      console.error('DELETE request failed:', error);
+      return this.handleError.handle(error);
     }
   }
 }

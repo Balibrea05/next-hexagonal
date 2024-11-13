@@ -3,7 +3,9 @@ import localFont from 'next/font/local';
 import React from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './globals.scss';
+import './styles/globals.scss';
+import './styles/forms.scss';
+import ClientLayoutComponent from '@/shared/ui/components/client-layout.component';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -29,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <ClientLayoutComponent />
         {children}
       </body>
     </html>

@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AuthService from '@/auth/infraestructure/auth.service';
+import { useInjection } from '@/shared/application/functions/use-injection.function';
+import { UseLoginUserHookResponse } from '@/auth/domain/interfaces/hooks/login-user.interface';
+import { useRouter } from 'next/navigation';
 
-export const useLoginUser = () => {
-  const authService = new AuthService();
+export const useLoginUserHook: UseLoginUserHookResponse = () => {
+  const authService = useInjection(AuthService);
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [visibility, setVisibility] = useState<boolean>(false);
-  const login = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const [error, setError] = useState<boolean>(false);
+  const login = async () => {
     setIsLoading(true);
 
     const response = await authService.login({
@@ -16,9 +20,14 @@ export const useLoginUser = () => {
       password,
     });
 
-    console.log(response);
-
     setIsLoading(false);
+
+    if (response.status !== 200) {
+      setError(true);
+      return;
+    }
+
+    router.push('/home');
   };
   const changeVisibility = () => {
     setVisibility(!visibility);
@@ -27,9 +36,11 @@ export const useLoginUser = () => {
   return {
     isLoading,
     visibility,
+    email,
     login,
     setEmail,
     setPassword,
     changeVisibility,
+    error,
   };
 };

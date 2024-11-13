@@ -1,0 +1,15 @@
+.input-container-right {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-container-right input {
+  padding-right: 2.5rem;
+}
+
+.input-container-right i {
+  position: absolute;
+  right: 0.5rem;
+  cursor: pointer;
+}

@@ -5,16 +5,16 @@ const LoginLogoComponent: JSX.Element = () => {
   return (
     <div
       className={
-        'd-flex justify-content-center align-items-center w-100 bg-light-subtle'
+        'd-flex justify-content-center align-items-center w-100 bg-white'
       }
     >
       <Image
         src={
-          'https://w7.pngwing.com/pngs/786/126/png-transparent-logo-contracting-photography-logo-symbol-thumbnail.png'
+          'https://img.freepik.com/vector-premium/logotipo-tienda-ropa-hombres-tienda-ropa-sobre-fondo-transparente-vector-logotipo-tienda-ropa_148524-756.jpg'
         }
         alt={'Logo image'}
-        width={200}
-        height={200}
+        width={400}
+        height={300}
       ></Image>
     </div>
   );

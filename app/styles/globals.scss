@@ -1,3 +1,5 @@
+@import "../../node_modules/primeicons/primeicons.css";
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -40,4 +42,8 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+button:disabled {
+  background-color: rgba(255,255,255,0.2);
 }

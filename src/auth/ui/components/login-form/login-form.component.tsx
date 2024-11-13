@@ -1,5 +1,8 @@
 import { JSX } from 'react';
-import { useLoginUser } from '@/auth/application/login-user/use-login-user';
+import { useLoginUserHook } from '@/auth/application/use-cases/login-user.hook';
+import { useEmailValidationHook } from '@/auth/application/validations/email-validation.hook';
+import Form from 'next/form';
+import { useLengthValidationHook } from '@/shared/application/validations/length-validation.hook';
 
 const LoginFormComponent: JSX.Element = () => {
   const {
@@ -9,7 +12,11 @@ const LoginFormComponent: JSX.Element = () => {
     setEmail,
     login,
     changeVisibility,
-  } = useLoginUser();
+    error,
+  } = useLoginUserHook();
+
+  const { isValidEmail, ensureEmailIsValid } = useEmailValidationHook();
+  const { isValidLength, ensureHaveLength } = useLengthValidationHook();
   return (
     <div
       className={
@@ -19,37 +26,52 @@ const LoginFormComponent: JSX.Element = () => {
       <h2 className={'w-50 text-center'}>
         Únete a nuestra App para comprar ropa
       </h2>
-      <button onClick={changeVisibility}>Cambiar visibilidad</button>
-      <form>
+      <Form action={''} className={'w-25'}>
         <div className={'d-flex flex-column'}>
           <div className={'py-3'}>
             <input
-              className={'p-1'}
+              className={'p-1 w-100'}
               name={'email'}
               type={'text'}
-              onChange={setEmail}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                ensureEmailIsValid(e.target.value);
+              }}
               placeholder={'email'}
+              aria-label={'email input'}
             />
           </div>
-          <div className={'py-3'}>
+          <div className="input-container-right py-3">
             <input
-              className={'p-1'}
-              name={'password'}
+              className={'p-1 w-100'}
+              name="password"
               type={visibility ? 'text' : 'password'}
-              onChange={setPassword}
-              placeholder={'password'}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                ensureHaveLength(e.target.value);
+              }}
+              placeholder="password"
+              aria-label={'password input'}
             />
+            <i
+              className={`pi ${visibility ? 'pi-eye-slash' : ' pi-eye'}`}
+              style={{ fontSize: '1rem' }}
+              onClick={changeVisibility}
+              aria-label={visibility ? 'Hide password' : 'Show password'}
+            ></i>
           </div>
+          {error && <p className={'text-danger'}>Invalid email or password</p>}
           <button
             className={'rounded-3 border-0 p-2'}
-            disabled={isLoading}
-            type={'submit'}
-            onSubmit={login}
+            disabled={!isValidLength || !isValidEmail || isLoading}
+            type={'button'}
+            aria-label={'login button'}
+            onClick={login}
           >
             Login
           </button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 };
