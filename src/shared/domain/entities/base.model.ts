@@ -1,6 +1,6 @@
 export class BaseModel {
-  id: string;
+  id!: string;
 
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

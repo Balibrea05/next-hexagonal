@@ -3,8 +3,10 @@ import AuthService from '@/auth/infraestructure/auth.service';
 import { useInjection } from '@/shared/application/functions/use-injection.function';
 import { UseLoginUserHookResponse } from '@/auth/domain/interfaces/hooks/login-user.interface';
 import { useRouter } from 'next/navigation';
+import { AuthInterface } from '@/auth/domain/interfaces/output/auth.interface';
+import { ApiErrorInterface } from '@/shared/domain/interfaces/api-error.interface';
 
-export const useLoginUserHook: UseLoginUserHookResponse = () => {
+export const useLoginUserHook = (): UseLoginUserHookResponse => {
   const authService = useInjection(AuthService);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -15,14 +17,16 @@ export const useLoginUserHook: UseLoginUserHookResponse = () => {
   const login = async () => {
     setIsLoading(true);
 
-    const response = await authService.login({
-      email,
-      password,
-    });
+    const response: AuthInterface | ApiErrorInterface = await authService.login(
+      {
+        email,
+        password,
+      }
+    );
 
     setIsLoading(false);
 
-    if (response.status !== 200) {
+    if (response.statusCode && response.statusCode !== 200) {
       setError(true);
       return;
     }

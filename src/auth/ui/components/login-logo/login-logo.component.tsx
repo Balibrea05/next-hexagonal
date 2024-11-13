@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import { JSX } from 'react';
+import { FC } from 'react';
 
-const LoginLogoComponent: JSX.Element = () => {
+const LoginLogoComponent: FC = () => {
   return (
     <div
       className={

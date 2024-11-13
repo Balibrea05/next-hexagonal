@@ -1,15 +1,16 @@
 import AxiosConfig from '@/shared/infraestructure/axios.config';
-import { AxiosInstance, AxiosPromise } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import { LoginInterface } from '@/auth/domain/interfaces/input/login.interface';
-import { AuthInterface } from '@/auth/domain/interfaces/output/auth.interface';
 import { injectable } from 'tsyringe';
 import { HandleError } from '@/shared/infraestructure/handle.error';
+import { AuthInterface } from '@/auth/domain/interfaces/output/auth.interface';
+import { ApiErrorInterface } from '@/shared/domain/interfaces/api-error.interface';
 
 @injectable()
 export default class AuthService {
-  #token: string;
-  #httpClient: AxiosInstance;
-  #handleError: HandleError;
+  #token!: string;
+  #httpClient!: AxiosInstance;
+  #handleError!: HandleError;
 
   constructor(
     private readonly axiosConfig: AxiosConfig,
@@ -19,13 +20,16 @@ export default class AuthService {
     this.#handleError = handleError;
   }
 
-  async login(body: LoginInterface): AxiosPromise<AuthInterface> {
+  async login(
+    body: LoginInterface
+  ): Promise<AuthInterface | ApiErrorInterface> {
     try {
-      const response = await this.#httpClient.post('/auth/login', body);
+      const response: AxiosResponse<AuthInterface> =
+        await this.#httpClient.post('/auth/login', body);
 
       this.token = response.data.token;
 
-      return response;
+      return response.data;
     } catch (e) {
       return this.#handleError.handle(e);
     }
@@ -35,7 +39,7 @@ export default class AuthService {
     return this.#token;
   }
 
-  set token(token: string): void {
+  set token(token: string) {
     this.#token = token;
   }
 }

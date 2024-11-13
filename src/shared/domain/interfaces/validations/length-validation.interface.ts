@@ -1,4 +1,4 @@
 export interface LengthValidationInterface {
-  isValid: boolean;
+  isValidLength: boolean;
   ensureHaveLength: (value: string) => void;
 }

@@ -6,7 +6,9 @@ export default class AxiosConfig {
   private readonly baseUrl: string =
     process.env.API_BASE_URL || 'https://api.devegames.com/api';
 
-  #headers: AxiosHeaders = { accept: 'application/json' };
+  #headers: AxiosHeaders = new AxiosHeaders({
+    accept: 'application/json',
+  });
 
   constructor() {}
 
@@ -17,7 +19,7 @@ export default class AxiosConfig {
 
     return axios.create({
       baseURL: this.baseUrl,
-      headers: this._headers,
+      headers: this.#headers,
     });
   }
 }

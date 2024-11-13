@@ -1,10 +1,10 @@
-import { JSX } from 'react';
+import { FC } from 'react';
 import { useLoginUserHook } from '@/auth/application/use-cases/login-user.hook';
 import { useEmailValidationHook } from '@/auth/application/validations/email-validation.hook';
 import Form from 'next/form';
 import { useLengthValidationHook } from '@/shared/application/validations/length-validation.hook';
 
-const LoginFormComponent: JSX.Element = () => {
+const LoginFormComponent: FC = () => {
   const {
     isLoading,
     visibility,
@@ -53,12 +53,17 @@ const LoginFormComponent: JSX.Element = () => {
               placeholder="password"
               aria-label={'password input'}
             />
-            <i
-              className={`pi ${visibility ? 'pi-eye-slash' : ' pi-eye'}`}
-              style={{ fontSize: '1rem' }}
+            <button
+              type="button"
               onClick={changeVisibility}
+              className="icon-button"
               aria-label={visibility ? 'Hide password' : 'Show password'}
-            ></i>
+            >
+              <i
+                className={`pi ${visibility ? 'pi-eye-slash' : 'pi-eye'}`}
+                style={{ fontSize: '1rem' }}
+              ></i>
+            </button>
           </div>
           {error && <p className={'text-danger'}>Invalid email or password</p>}
           <button

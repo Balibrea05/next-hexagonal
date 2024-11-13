@@ -1,6 +1,5 @@
 import { injectable } from 'tsyringe';
-import axios, { AxiosError } from 'axios';
-import { ApiErrorInterface } from '@/shared/domain/interfaces/api-error.interface';
+import axios from 'axios';
 import { IError } from '@/shared/domain/interfaces/implementations/error.interface';
 
 @injectable()
@@ -13,7 +12,7 @@ export class HandleError implements IError {
     500: 'Internal server error',
   };
 
-  handle(error: AxiosError): ApiErrorInterface {
+  handle<T>(error: unknown): T {
     if (axios.isAxiosError(error)) {
       const statusCode = error.response?.status;
       const message =
@@ -21,8 +20,8 @@ export class HandleError implements IError {
           ? this.#statusMapping[statusCode]
           : 'Unknown error occurred';
 
-      return { message, status: statusCode };
+      return { message, status: statusCode } as T;
     }
-    return { message: 'Api error' };
+    return { message: 'Api error' } as T;
   }
 }

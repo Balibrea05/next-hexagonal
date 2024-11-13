@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { LengthValidationInterface } from '@/shared/domain/interfaces/validations/length-validation.interface';
 
-export const useLengthValidationHook: LengthValidationInterface = (
+export const useLengthValidationHook = (
   length: number = 3
-) => {
+): LengthValidationInterface => {
   const [isValidLength, setIsValidLength] = useState<boolean>(false);
 
   const ensureHaveLength = (value: string) => {
