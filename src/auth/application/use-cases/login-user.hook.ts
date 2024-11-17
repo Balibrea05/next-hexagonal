@@ -4,7 +4,7 @@ import { useInjection } from '@/shared/application/functions/use-injection.funct
 import { UseLoginUserHookResponse } from '@/auth/domain/interfaces/hooks/login-user.interface';
 import { useRouter } from 'next/navigation';
 import { AuthInterface } from '@/auth/domain/interfaces/output/auth.interface';
-import { ApiErrorInterface } from '@/shared/domain/interfaces/api-error.interface';
+import { ApiErrorInterface } from '@/shared/domain/interfaces/output/api-error.interface';
 
 export const useLoginUserHook = (): UseLoginUserHookResponse => {
   const authService = useInjection(AuthService);

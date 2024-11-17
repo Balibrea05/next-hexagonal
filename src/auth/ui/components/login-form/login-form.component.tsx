@@ -54,7 +54,6 @@ const LoginFormComponent: FC = () => {
               aria-label={'password input'}
             />
             <button
-              type="button"
               onClick={changeVisibility}
               className="icon-button"
               aria-label={visibility ? 'Hide password' : 'Show password'}
