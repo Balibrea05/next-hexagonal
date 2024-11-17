@@ -1,5 +1,11 @@
+import AuthLayout from '@/shared/ui/layouts/auth.layout';
+
 const Page = () => {
-  return null;
+  return (
+    <AuthLayout>
+      <p></p>
+    </AuthLayout>
+  );
 };
 
 export default Page;
