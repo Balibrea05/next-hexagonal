@@ -5,7 +5,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/globals.scss';
 import './styles/forms.scss';
-import ClientLayoutComponent from '@/shared/ui/components/client-layout.component';
+import ClientLayoutComponent from '@/shared/ui/components/client-layout/client-layout.component';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
