@@ -1,18 +1,18 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
-import AxiosConfig from '@/shared/infraestructure/axios.config';
+import { AxiosResponse } from 'axios';
 import { injectable } from 'tsyringe';
 import { IApiService } from '@/shared/domain/interfaces/implementations/api.interface';
 import { HandleError } from '@/shared/infraestructure/handle.error';
+import { MockClient } from '@/shared/infraestructure/mock.client';
 
 @injectable()
 export default class ApiService implements IApiService {
-  #httpClient!: AxiosInstance;
+  #httpClient!: MockClient;
   #handleError!: HandleError;
   constructor(
-    private readonly axiosConfig: AxiosConfig,
+    private readonly mockClient: MockClient,
     private readonly handleError: HandleError
   ) {
-    this.#httpClient = axiosConfig.createAxiosInstance();
+    this.#httpClient = mockClient;
     this.#handleError = handleError;
   }
 

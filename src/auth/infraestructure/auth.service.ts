@@ -1,22 +1,22 @@
-import AxiosConfig from '@/shared/infraestructure/axios.config';
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { LoginInterface } from '@/auth/domain/interfaces/input/login.interface';
 import { injectable } from 'tsyringe';
 import { HandleError } from '@/shared/infraestructure/handle.error';
 import { AuthInterface } from '@/auth/domain/interfaces/output/auth.interface';
-import { ApiErrorInterface } from '@/shared/domain/interfaces/api-error.interface';
+import { ApiErrorInterface } from '@/shared/domain/interfaces/output/api-error.interface';
+import { MockClient } from '@/shared/infraestructure/mock.client';
 
 @injectable()
 export default class AuthService {
   #token!: string;
-  #httpClient!: AxiosInstance;
+  #httpClient!: MockClient;
   #handleError!: HandleError;
 
   constructor(
-    private readonly axiosConfig: AxiosConfig,
+    private readonly mockClient: MockClient,
     private readonly handleError: HandleError
   ) {
-    this.#httpClient = axiosConfig.createAxiosInstance();
+    this.#httpClient = mockClient;
     this.#handleError = handleError;
   }
 
@@ -26,8 +26,6 @@ export default class AuthService {
     try {
       const response: AxiosResponse<AuthInterface> =
         await this.#httpClient.post('/auth/login', body);
-
-      this.token = response.data.token;
 
       return response.data;
     } catch (e) {
