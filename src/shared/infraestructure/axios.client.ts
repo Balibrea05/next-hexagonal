@@ -2,7 +2,7 @@ import axios, { AxiosHeaders, AxiosInstance } from 'axios';
 import { injectable } from 'tsyringe';
 
 @injectable()
-export default class AxiosConfig {
+export default class AxiosClient {
   private readonly baseUrl: string =
     process.env.API_BASE_URL || 'https://api.devegames.com/api';
 
